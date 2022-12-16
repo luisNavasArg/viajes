@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ['latin'] })
 export default function Home() {
   const [data,setData]=useState([])
   const resAPi = ()=>{
-    fetch('http://localhost:3000/api/users/add')
+    fetch('https://viajes-afyfu5egl-lpipnavas.vercel.app/api/users/add')
     .then(response=>response.json())
     .then(data=>{
       console.log(data)
