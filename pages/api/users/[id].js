@@ -1,4 +1,5 @@
 import client from '../../../config/config'
+client()
 import users from '../../../models/users'
 export default function handler(req, res) {
     try {

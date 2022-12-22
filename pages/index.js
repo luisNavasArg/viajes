@@ -3,22 +3,14 @@ import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '../styles/Home.module.css'
 import { useEffect, useState } from 'react'
-
+import dbConnect from '../config/config'
+import users from '../models/users'
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+export default function Home({Users}) {
   const [data,setData]=useState([])
-  const resAPi = ()=>{
-    fetch('https://viajes-afyfu5egl-lpipnavas.vercel.app/api/users/add')
-    .then(response=>response.json())
-    .then(data=>{
-      console.log(data)
-    })
-    .catch(error=>console.log(error))
-  }
-  useEffect(()=>{
-    resAPi();
-  })
+  console.log(Users);
+
   return (
     <>
       <Head>
@@ -73,6 +65,19 @@ export default function Home() {
         </div>
 
         <div className={styles.grid}>
+          {Users.map((u,i)=>{
+            return <a key={i.toString()}>
+              <p>id: {u._id}</p>
+             <p> {u.name} {u.last}</p>
+              <img
+                src={u.img}
+                alt={u.name}
+                className={styles.vercelLogo}
+                width={100}
+           
+              />
+            </a>
+          })}
           <a
             href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
             className={styles.card}
@@ -87,50 +92,24 @@ export default function Home() {
             </p>
           </a>
 
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Learn <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Templates <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Discover and deploy boilerplate example Next.js&nbsp;projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Deploy <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Instantly deploy your Next.js site to a shareable URL
-              with&nbsp;Vercel.
-            </p>
-          </a>
         </div>
       </main>
     </>
   )
+}
+
+
+
+export async function getServerSideProps() {
+  await dbConnect()
+
+  /* find all the data in our database */
+  const result = await users.find({})
+  const Users = result.map((doc) => {
+    const user = doc.toObject()
+    user._id = user._id.toString()
+    return user
+  })
+
+  return { props: { Users: Users } }
 }
