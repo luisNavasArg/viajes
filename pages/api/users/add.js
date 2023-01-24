@@ -17,6 +17,7 @@ try {
                     password:req.body.password,
                     img:req.body.img,
                 }
+                console.log(object);
                 users.insertMany(object).then((data)=>{
                     users.find().then((data)=>{
                         res.status(200).json({msg:data})

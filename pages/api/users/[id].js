@@ -6,7 +6,8 @@ export default function handler(req, res) {
       switch (req.method) {
         case 'DELETE':
           let idDel = req.query.id;
-          users.findOneAndDelete(idDel)
+          console.log(idDel);
+          users.findOneAndDelete({_id:idDel})
           .then((result)=>{
             res.status(200).json(result);
           })

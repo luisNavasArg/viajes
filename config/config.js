@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-const MONGODB_URI ="mongodb+srv://sersenlinea:sersenlinea@cluster0.amioq.mongodb.net/test"
+const MONGODB_URI ="mongodb+srv://sersenlinea:sersenlinea@cluster0.amioq.mongodb.net/myFirstDatabase"
 if (!MONGODB_URI) {
   throw new Error(
     'Please define the MONGODB_URI environment variable inside .env.local'
